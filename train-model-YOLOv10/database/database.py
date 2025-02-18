@@ -39,11 +39,46 @@ class Database:
 db = Database()
 
 #create table
-db.insert("""
-        CREATE TABLE students (
-            id INT PRIMARY KEY,
-            name NVARCHAR(50),
-            age INT,
-            address NVARCHAR(255)
-        )
-    """)
+
+create_table="""
+
+CREATE TABLE ChuXe (
+    soCCCD VARCHAR(12) PRIMARY KEY,
+    ten VARCHAR(50),
+    ho VARCHAR(50),
+    queQuan VARCHAR(50),
+    gioiTinh CHAR(1),
+    ngaySinh DATE
+
+);
+
+CREATE TABLE TinhThanhPho (
+    maTinh VARCHAR(10) PRIMARY KEY,
+    tenTinhThanhPho VARCHAR(50)
+);
+
+CREATE TABLE DangKyXe (
+    bienSo VARCHAR(10) PRIMARY KEY,
+    soKhung VARCHAR(50),
+    soMay VARCHAR(50),
+    mauSac VARCHAR(50),
+    namSanXuat INT,
+    ngayDangKy DATE,
+    ngayHetHan DATE,
+    tenXe VARCHAR(50),
+    hangXe VARCHAR(50),
+    soCho INT,
+    soCCCD VARCHAR(12),
+    maTinh VARCHAR(10),
+    FOREIGN KEY (soCCCD) REFERENCES ChuXe(soCCCD),
+    FOREIGN KEY (maTinh) REFERENCES TinhThanhPho(maTinh),
+);
+CREATE TABLE XeViPham (
+    bienSo VARCHAR(10),
+    thoiGian DATETIME,
+    trangThai VARCHAR(20),
+    hinhAnhViPham VARCHAR(255),
+    PRIMARY KEY (bienSo, thoiGian),
+    FOREIGN KEY (bienSo) REFERENCES DangKyXe(bienSo)
+);;"""
+db.insert(create_table)
