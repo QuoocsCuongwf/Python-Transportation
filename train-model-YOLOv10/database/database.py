@@ -81,4 +81,5 @@ CREATE TABLE XeViPham (
     PRIMARY KEY (bienSo, thoiGian),
     FOREIGN KEY (bienSo) REFERENCES DangKyXe(bienSo)
 );;"""
-db.insert(create_table)
+data=db.query("select * from chuXe")
+print(data[0][2])

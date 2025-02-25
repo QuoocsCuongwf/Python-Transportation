@@ -4,10 +4,18 @@ from ultralytics import YOLO
 # Load the model
 model = YOLO(f"D:\\code\\python-transportation\\train-model-YOLOv10\\best.pt")
 
-# Mở webcam (0 là chỉ số của camera đầu tiên)
-cap = cv2.VideoCapture(0)
+# Replace this with the URL provided by your app
+url = "http://192.168.254.55:8080/video"
+
+# Open a connection to the smartphone camera
+cap = cv2.VideoCapture(url)
+
 while True:
     success, img = cap.read()
+    if not success:
+        print("Failed to grab frame")
+        break
+
     results = model(img, stream=True)
 
     # coordinates
@@ -21,7 +29,7 @@ while True:
 
             # put box in cam
             cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 255), 1)
-            print("cls:",boxes.cls)
+            print("cls:", boxes.cls)
             # class name
             labels = str(box.cls)
             if hasattr(box, 'label'):
@@ -40,7 +48,7 @@ while True:
             # Draw the label text on the image
             cv2.putText(img, labels, org, font, fontScale, color, thickness)
 
-             # Crop the image to the bounding box
+            # Crop the image to the bounding box
             cropped_img = img[y1:y2, x1:x2]
             resized_cropped_img = cv2.resize(cropped_img, (200, 200))
             cv2.imshow('Cropped Image', resized_cropped_img)

@@ -1,4 +1,4 @@
-pip install cv2
+pip install opencv-python
 pip install ultralytics
 pip install https://github.com/THU-MIG/yolov10.git
 pip install pyodbc
