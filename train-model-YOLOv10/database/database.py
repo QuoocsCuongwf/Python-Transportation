@@ -83,3 +83,9 @@ CREATE TABLE XeViPham (
 );;"""
 data=db.query("select * from chuXe")
 print(data[0][2])
+
+vi_pham = """
+INSERT INTO XeViPham (bienSo, thoiGian, trangThai, hinhAnhViPham)
+VALUES ('29A12345', '2021-10-10 10:00:00', 'Chua xu ly', '29A12345_20211010_100000.jpg');
+"""
+db.insert(vi_pham)

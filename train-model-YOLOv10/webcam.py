@@ -1,8 +1,11 @@
 import cv2
 from ultralytics import YOLO
+import read_plate
 
 # Load the model
 model = YOLO(f"D:\\code\\python-transportation\\train-model-YOLOv10\\best.pt")
+
+
 
 # Mở webcam (0 là chỉ số của camera đầu tiên)
 cap = cv2.VideoCapture(0)
@@ -44,10 +47,10 @@ while True:
             cropped_img = img[y1:y2, x1:x2]
             resized_cropped_img = cv2.resize(cropped_img, (200, 200))
             cv2.imshow('Cropped Image', resized_cropped_img)
-
+            results=read_plate.read_license_plate(resized_cropped_img)
+            print("Results:",results)
     cv2.imshow('Webcam', img)
     if cv2.waitKey(1) == ord('q'):
         break
-
 cap.release()
 cv2.destroyAllWindows()
