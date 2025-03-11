@@ -1,22 +1,17 @@
 import tkinter as tk
+import sys
+sys.path.append('D:/code/python-transportation/train-model-YOLOv10')
+import webcam
 
-class MainGUI:
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Main GUI")
-        self.master.geometry("800x900")
-        self.master.resizable(False, False)
-
-        self.label = tk.Label(self.master, text="Hello World")
-        self.label.pack()
-
-        self.button = tk.Button(self.master, text="Click Me", command=self.click_me)
-        self.button.pack()
-
-    def click_me(self):
-        self.label.config(text="Button Clicked")
-
-root = tk.Tk()
-app = MainGUI(root)
-root.mainloop()
-# End of GUI/mainGUi.py
+gui = tk.Tk()
+gui.title("My GUI")
+gui.geometry("1200x700")
+menuButton = tk.Button(gui, text="Menu", width=10, height=2, bg="blue", fg="white")
+menuButton.pack()
+def start_camera():
+    webcam.load_gui(gui,label_camera)
+button_camera = tk.Button(gui, text="Camera", width=10, height=2, bg="blue", fg="white", command=start_camera)
+button_camera.pack()
+label_camera=tk.Label(gui)
+label_camera.place(x=50,y=80)
+gui.mainloop()
