@@ -12,11 +12,11 @@ model = YOLO(f"D:\\code\\python-transportation\\train-model-YOLOv10\\best.pt")
 cap = cv2.VideoCapture(0)
 camera_running = False
 
-def start_camera(gui,camera_label):
+def start_camera(gui,camera_label,right_frame):
     global cap, camera_running
     camera_running = True
     cap = cv2.VideoCapture(0)  # Sử dụng camera mặc định
-    update_frame(gui,camera_label)
+    update_frame(gui,camera_label,right_frame)
 
 def stop_camera():
     global camera_running
@@ -24,13 +24,14 @@ def stop_camera():
     if cap.isOpened():
         cap.release()  # Dừng camera
 
-def update_frame(gui,camera_label):
+def update_frame(gui,camera_label,right_frame):
     if camera_running and cap.isOpened():
         ret, frame = cap.read()  # Đọc một khung hình từ camera
         results = model(frame, stream=True)
         if ret:
             for r in results:
                 boxes = r.boxes
+                h, w=0,0
 
                 for box in boxes:
                     # bounding box
@@ -43,22 +44,26 @@ def update_frame(gui,camera_label):
                     color = (255, 0, 0)
                     thickness = 2
                     crop_img = frame[y1:y2, x1:x2]
-                    cv2.putText(frame, "License Plate", org, font, fontScale, color, thickness, cv2.LINE_AA)
-
-                    list_plates_label = []
-                    crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
-                    plate = ImageTk.PhotoImage(Image.fromarray(crop_img))
-                    plate_label = Label(gui, image=plate)
-                    plate_label.image = plate
-                    list_plates_label.append(plate_label)
-                    list_plates_label.pop().place(x=650, y=80)
-
+                    # Hiển thị biển số xe
+                    if crop_img.size != 0:
+                        cv2.imshow("Crop", crop_img)
+                        cv2.imwrite("D:/code/python-transportation/train-model-YOLOv10/crop.jpg", crop_img)
+                        result = read_plate.read_license_plate("D:/code/python-transportation/train-model-YOLOv10/crop.jpg")
+                        if result:
+                            plate_number = result[0][1]
+                            
+                            cv2.putText(frame, plate_number, (x1, y1 - 30), font, fontScale, color, thickness, cv2.LINE_AA)
+                            print(plate_number)
+                            # Tạo nhãn để hiển thị giá trị biển số xe và sắp xếp bằng .grid()
+                            label_plate = tk.Label(right_frame, text=plate_number, font=("Arial", 20))
+                            label_plate.grid(row=0, column=0, padx=20, pady=20)
+                    
 
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Chuyển đổi sang RGB
             img = ImageTk.PhotoImage(Image.fromarray(frame))
             camera_label.imgtk = img  # Lưu tham chiếu để tránh bị garbage collected
             camera_label.configure(image=img)
-        camera_label.after(10, lambda:update_frame(gui,camera_label))  # Cập nhật khung hình sau 10ms
+        camera_label.after(10, lambda:update_frame(gui,camera_label,right_frame))  # Cập nhật khung hình sau 10ms
 
-def load_gui(gui,camera_label):
-    start_camera(gui,camera_label= camera_label)
+def load_gui(gui,camera_label,right_frame):
+    start_camera(gui,camera_label= camera_label,right_frame=right_frame)
