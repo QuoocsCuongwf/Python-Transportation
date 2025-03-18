@@ -24,7 +24,7 @@ right_frame.rowconfigure(1, weight=1)
 label_camera = tk.Label(left_frame)
 label_camera.place(x=50, y=80)
 
-webcam.load_gui(gui, label_camera,right_framez)
+webcam.load_gui(gui, label_camera,right_frame)
 
 # Tạo nhãn để hiển thị giá trị biển số xe và sắp xếp bằng .grid()
 
