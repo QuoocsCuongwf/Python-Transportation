@@ -46,8 +46,7 @@ def update_frame(gui,camera_label,right_frame):
                     crop_img = frame[y1:y2, x1:x2]
                     # Hiển thị biển số xe
                     if crop_img.size != 0:
-                        cv2.imshow("Crop", crop_img)
-                        cv2.imwrite("D:/code/python-transportation/train-model-YOLOv10/crop.jpg", crop_img)
+                        cv2.imwrite("D:/code/python-transportation/train-model-YOLOv10/Plates/crop.png", crop_img)
                         result = read_plate.read_license_plate("D:/code/python-transportation/train-model-YOLOv10/crop.jpg")
                         if result:
                             plate_number=""
