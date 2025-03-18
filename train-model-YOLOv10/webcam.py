@@ -50,6 +50,7 @@ def update_frame(gui,camera_label,right_frame):
                         cv2.imwrite("D:/code/python-transportation/train-model-YOLOv10/crop.jpg", crop_img)
                         result = read_plate.read_license_plate("D:/code/python-transportation/train-model-YOLOv10/crop.jpg")
                         if result:
+                            plate_number=""
                             for i in range(len(result)):
                                 plate_number += result[i][1]
                             
